@@ -1,0 +1,6 @@
+
+# secrets
+lekha_function_app/firebase-service-account.json
+local.settings.json
+.env
+
