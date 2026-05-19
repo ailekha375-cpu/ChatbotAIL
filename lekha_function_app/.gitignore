@@ -48,15 +48,4 @@ __pycache__/
 __blobstorage__
 __queuestorage__
 __azurite_db*__.json
-
-# Secrets
-firebase-service-account.json
-*.pem
-*.key
-
-# VS Code (optional)
-.vscode/
-
-# OS files
-.DS_Store
-Thumbs.db
+azurevenv
