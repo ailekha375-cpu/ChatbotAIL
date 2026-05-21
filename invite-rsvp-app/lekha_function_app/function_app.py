@@ -16,8 +16,15 @@ from azure.storage.blob import BlobServiceClient, ContentSettings
 import firebase_admin
 from firebase_admin import credentials, auth
 
+
+# ----------------------------
+# App + Routes (Python v2)
+# ----------------------------
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
+# ----------------------------
+# Config
+# ----------------------------
 SYSTEM_PROMPT = """You are a router for a chatbot.
 Return ONLY valid JSON with keys:
 - intent: "chat" | "create_invitation"
@@ -34,6 +41,10 @@ Rules:
 HISTORY_LIMIT = 20
 AZURE_ML_TIMEOUT_SECONDS = 120
 
+
+# ----------------------------
+# Env vars (match your local.settings.json)
+# ----------------------------
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 
 COSMOS_URL = os.environ.get("COSMOS_URL", "")
@@ -42,7 +53,6 @@ COSMOS_DB_NAME = os.environ.get("COSMOS_DB_NAME", "lekha-db1")
 COSMOS_CONTAINER_CONVERSATIONS = os.environ.get("COSMOS_CONTAINER_CONVERSATIONS", "conversations")
 COSMOS_CONTAINER_MESSAGES = os.environ.get("COSMOS_CONTAINER_MESSAGES", "messages")
 COSMOS_CONTAINER_EVENTS = os.environ.get("COSMOS_CONTAINER_EVENTS", "events")
-COSMOS_CONTAINER_CONTACTS = os.environ.get("COSMOS_CONTAINER_CONTACTS", "contacts")
 COSMOS_CONTAINER_GUESTS = os.environ.get("COSMOS_CONTAINER_GUESTS", "guests")
 COSMOS_CONTAINER_RSVP_RESPONSES = os.environ.get("COSMOS_CONTAINER_RSVP_RESPONSES", "rsvpResponses")
 
@@ -59,6 +69,10 @@ BLOB_CONTAINER = os.environ.get("BLOB_CONTAINER", "invites")
 
 FIREBASE_SERVICE_ACCOUNT_JSON = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON", "")
 
+
+# ----------------------------
+# Clients (warm-start)
+# ----------------------------
 openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
 
 cosmos_client = CosmosClient(COSMOS_URL, credential=COSMOS_KEY) if (COSMOS_URL and COSMOS_KEY) else None
@@ -66,7 +80,6 @@ cosmos_db = cosmos_client.get_database_client(COSMOS_DB_NAME) if cosmos_client e
 conversations_ct = cosmos_db.get_container_client(COSMOS_CONTAINER_CONVERSATIONS) if cosmos_db else None
 messages_ct = cosmos_db.get_container_client(COSMOS_CONTAINER_MESSAGES) if cosmos_db else None
 events_ct = cosmos_db.get_container_client(COSMOS_CONTAINER_EVENTS) if cosmos_db else None
-contacts_ct = cosmos_db.get_container_client(COSMOS_CONTAINER_CONTACTS) if cosmos_db else None
 guests_ct = cosmos_db.get_container_client(COSMOS_CONTAINER_GUESTS) if cosmos_db else None
 rsvp_responses_ct = cosmos_db.get_container_client(COSMOS_CONTAINER_RSVP_RESPONSES) if cosmos_db else None
 
@@ -261,13 +274,6 @@ def _require_rsvp_containers() -> None:
         )
 
 
-def _require_contacts_container() -> None:
-    if not contacts_ct:
-        raise RuntimeError(
-            "Contacts container not configured. Check COSMOS_CONTAINER_CONTACTS."
-        )
-
-
 def _get_event_for_user(uid: str, event_id: str) -> Dict[str, Any]:
     return events_ct.read_item(item=event_id, partition_key=uid)
 
@@ -307,37 +313,6 @@ def _list_rsvp_responses(event_id: str) -> List[Dict[str, Any]]:
     ))
 
 
-def _list_contacts_for_user(uid: str) -> List[Dict[str, Any]]:
-    query = "SELECT * FROM c WHERE c.uid = @uid"
-    params = [{"name": "@uid", "value": uid}]
-    items = list(contacts_ct.query_items(
-        query=query,
-        parameters=params,
-        partition_key=uid
-    ))
-    items.sort(key=lambda item: item.get("updatedAt", ""), reverse=True)
-    return items
-
-
-def _get_contact_for_user(uid: str, contact_id: str) -> Dict[str, Any]:
-    return contacts_ct.read_item(item=contact_id, partition_key=uid)
-
-
-def _contact_summary(contact: Dict[str, Any]) -> Dict[str, Any]:
-    return {
-        "id": contact["id"],
-        "uid": contact.get("uid"),
-        "name": contact.get("name"),
-        "email": contact.get("email"),
-        "phone": contact.get("phone"),
-        "category": contact.get("category"),
-        "notes": contact.get("notes"),
-        "defaultGuestCount": contact.get("defaultGuestCount", 1),
-        "createdAt": contact.get("createdAt"),
-        "updatedAt": contact.get("updatedAt"),
-    }
-
-
 def _event_summary(event: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "id": event["id"],
@@ -363,83 +338,6 @@ def _event_summary(event: Dict[str, Any]) -> Dict[str, Any]:
         "createdAt": event.get("createdAt"),
         "updatedAt": event.get("updatedAt"),
     }
-
-
-@app.route(route="contacts", methods=["GET", "POST", "OPTIONS"])
-def contacts(req: func.HttpRequest) -> func.HttpResponse:
-    try:
-        if req.method == "OPTIONS":
-            return func.HttpResponse("", status_code=204)
-
-        _require_contacts_container()
-        uid = _get_uid_from_firebase(req)
-
-        if req.method == "GET":
-            return _json_response({"contacts": [_contact_summary(item) for item in _list_contacts_for_user(uid)]})
-
-        body = req.get_json()
-        name = (body.get("name") or "").strip()
-        if not name:
-            return _json_response({"error": "Missing required field: name"}, status_code=400)
-
-        now = _utc_now_iso()
-        contact = {
-            "id": f"contact_{uuid.uuid4().hex}",
-            "uid": uid,
-            "name": name,
-            "email": (body.get("email") or "").strip(),
-            "phone": (body.get("phone") or "").strip(),
-            "category": (body.get("category") or "friends").strip() or "friends",
-            "notes": (body.get("notes") or "").strip(),
-            "defaultGuestCount": int(body.get("defaultGuestCount", 1) or 1),
-            "createdAt": now,
-            "updatedAt": now,
-        }
-        contacts_ct.create_item(contact)
-        return _json_response({"contact": _contact_summary(contact)}, status_code=201)
-    except PermissionError as e:
-        return _json_response({"error": str(e)}, status_code=401)
-    except Exception as e:
-        logging.exception("contacts route failed")
-        return _json_response({"error": str(e)}, status_code=500)
-
-
-@app.route(route="contacts/{contactId}", methods=["PATCH", "DELETE", "OPTIONS"])
-def contact_by_id(req: func.HttpRequest) -> func.HttpResponse:
-    try:
-        if req.method == "OPTIONS":
-            return func.HttpResponse("", status_code=204)
-
-        _require_contacts_container()
-        contact_id = req.route_params.get("contactId")
-        if not contact_id:
-            return _json_response({"error": "Missing contactId in route."}, status_code=400)
-
-        uid = _get_uid_from_firebase(req)
-        contact = _get_contact_for_user(uid, contact_id)
-
-        if req.method == "DELETE":
-            contacts_ct.delete_item(item=contact_id, partition_key=uid)
-            return _json_response({"deleted": True, "contactId": contact_id})
-
-        body = req.get_json()
-        contact["name"] = (body.get("name") or contact.get("name") or "").strip()
-        if not contact["name"]:
-            return _json_response({"error": "Contact name cannot be blank."}, status_code=400)
-        contact["email"] = (body.get("email") if "email" in body else contact.get("email") or "").strip()
-        contact["phone"] = (body.get("phone") if "phone" in body else contact.get("phone") or "").strip()
-        contact["category"] = (body.get("category") if "category" in body else contact.get("category") or "friends").strip() or "friends"
-        contact["notes"] = (body.get("notes") if "notes" in body else contact.get("notes") or "").strip()
-        if "defaultGuestCount" in body:
-            contact["defaultGuestCount"] = int(body.get("defaultGuestCount", 1) or 1)
-        contact["updatedAt"] = _utc_now_iso()
-        contacts_ct.replace_item(item=contact_id, body=contact)
-        return _json_response({"contact": _contact_summary(contact)})
-    except PermissionError as e:
-        return _json_response({"error": str(e)}, status_code=401)
-    except Exception as e:
-        logging.exception("contact_by_id failed")
-        return _json_response({"error": str(e)}, status_code=500)
 
 
 def _normalize_campaign_kit(raw_kit: Optional[Dict[str, Any]], uid: str, event_id: str) -> Dict[str, Any]:
@@ -720,74 +618,6 @@ def event_guests(req: func.HttpRequest) -> func.HttpResponse:
             return _json_response({"guests": guests})
 
         body = req.get_json()
-        contact_ids = body.get("contactIds")
-        if isinstance(contact_ids, list) and contact_ids:
-            _require_contacts_container()
-            now = _utc_now_iso()
-            requested_ids = {str(contact_id).strip() for contact_id in contact_ids if str(contact_id).strip()}
-            if not requested_ids:
-                return _json_response({"error": "contactIds must include at least one valid contact id."}, status_code=400)
-
-            contacts = [contact for contact in _list_contacts_for_user(uid) if contact.get("id") in requested_ids]
-            if not contacts:
-                return _json_response({"error": "No matching contacts were found for this account."}, status_code=400)
-
-            existing_guest_query = "SELECT * FROM c WHERE c.eventId = @eventId"
-            existing_guest_params = [{"name": "@eventId", "value": event_id}]
-            existing_guests = list(guests_ct.query_items(
-                query=existing_guest_query,
-                parameters=existing_guest_params,
-                partition_key=event_id
-            ))
-            guests_by_contact_id = {
-                guest.get("contactId"): guest
-                for guest in existing_guests
-                if guest.get("contactId")
-            }
-
-            assigned_guests: List[Dict[str, Any]] = []
-            for contact in contacts:
-                existing_guest = guests_by_contact_id.get(contact["id"])
-                if existing_guest:
-                    existing_guest["name"] = contact.get("name")
-                    existing_guest["email"] = contact.get("email")
-                    existing_guest["phone"] = contact.get("phone")
-                    existing_guest["guestType"] = contact.get("category") or existing_guest.get("guestType") or "friends"
-                    existing_guest["category"] = contact.get("category") or "friends"
-                    existing_guest["notes"] = contact.get("notes") or ""
-                    existing_guest["maxGuests"] = int(contact.get("defaultGuestCount", existing_guest.get("maxGuests", 1)) or 1)
-                    existing_guest["updatedAt"] = now
-                    guests_ct.replace_item(item=existing_guest["id"], body=existing_guest)
-                    assigned_guests.append(existing_guest)
-                    continue
-
-                guest = {
-                    "id": f"guest_{uuid.uuid4().hex}",
-                    "eventId": event_id,
-                    "uid": uid,
-                    "contactId": contact["id"],
-                    "name": contact.get("name"),
-                    "email": contact.get("email"),
-                    "phone": contact.get("phone"),
-                    "groupId": None,
-                    "isPrimaryGuest": True,
-                    "maxGuests": int(contact.get("defaultGuestCount", 1) or 1),
-                    "guestType": contact.get("category") or "friends",
-                    "category": contact.get("category") or "friends",
-                    "notes": contact.get("notes") or "",
-                    "rsvpToken": f"rsvp_{uuid.uuid4().hex}",
-                    "inviteStatus": "pending",
-                    "inviteSentAt": None,
-                    "lastReminderAt": None,
-                    "createdAt": now,
-                    "updatedAt": now,
-                }
-                guests_ct.create_item(guest)
-                assigned_guests.append(guest)
-
-            assigned_guests.sort(key=lambda item: item.get("createdAt", ""))
-            return _json_response({"guests": assigned_guests}, status_code=201)
-
         guest_items = body.get("guests")
         if not isinstance(guest_items, list) or not guest_items:
             return _json_response({"error": "Body must include a non-empty 'guests' array."}, status_code=400)
@@ -807,7 +637,6 @@ def event_guests(req: func.HttpRequest) -> func.HttpResponse:
                 "id": f"guest_{uuid.uuid4().hex}",
                 "eventId": event_id,
                 "uid": uid,
-                "contactId": raw_guest.get("contactId"),
                 "name": name,
                 "email": email,
                 "phone": (raw_guest.get("phone") or "").strip(),
@@ -815,8 +644,6 @@ def event_guests(req: func.HttpRequest) -> func.HttpResponse:
                 "isPrimaryGuest": bool(raw_guest.get("isPrimaryGuest", True)),
                 "maxGuests": int(raw_guest.get("maxGuests", 1) or 1),
                 "guestType": (raw_guest.get("guestType") or "single").strip(),
-                "category": (raw_guest.get("category") or raw_guest.get("guestType") or "single").strip(),
-                "notes": (raw_guest.get("notes") or "").strip(),
                 "rsvpToken": f"rsvp_{uuid.uuid4().hex}",
                 "inviteStatus": (raw_guest.get("inviteStatus") or "pending").strip() or "pending",
                 "inviteSentAt": raw_guest.get("inviteSentAt"),
@@ -1140,6 +967,9 @@ def conversation_by_id(req: func.HttpRequest) -> func.HttpResponse:
                 mimetype="application/json"
             )
 
+        # ----------------------------
+        # GET: return messages
+        # ----------------------------
         if req.method == "GET":
             query = """
                 SELECT c.role, c.type, c.content, c.createdAt
@@ -1166,6 +996,9 @@ def conversation_by_id(req: func.HttpRequest) -> func.HttpResponse:
                 mimetype="application/json"
             )
 
+        # ----------------------------
+        # DELETE: delete messages + conversation
+        # ----------------------------
         if req.method == "DELETE":
             # Delete all messages in this conversation (messages partition key: conversationId)
             query = "SELECT c.id FROM c WHERE c.conversationId = @cid"
