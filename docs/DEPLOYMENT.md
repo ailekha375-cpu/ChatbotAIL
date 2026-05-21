@@ -13,8 +13,7 @@ Repo used for deployment:
 Important frontend env vars:
 
 - `AZURE_FUNCTION_URL`
-  - example:
-  - `https://lekha-function-app-dfheewcyfrdqbjgr.westus2-01.azurewebsites.net/api/chat`
+
 - `NEXT_PUBLIC_APP_BASE_URL`
   - example:
   - `https://www.lekhaai.com`
