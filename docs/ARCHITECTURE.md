@@ -2,12 +2,15 @@
 
 ## High-level architecture
 
-```text
-Browser
-  -> Next.js frontend
-  -> Next.js API proxy routes
-  -> Azure Function App
-  -> Cosmos DB / email provider
+```mermaid
+flowchart LR
+  A["Browser"] --> B["Next.js frontend"]
+  B --> C["Next.js API routes"]
+  C --> D["Azure Function App"]
+  D --> E["Cosmos DB"]
+  D --> F["Resend"]
+  B --> G["Firebase client auth"]
+  D --> H["Firebase Admin token verification"]
 ```
 
 ## Frontend
@@ -62,6 +65,15 @@ Responsibilities:
 
 - event response data tied to a guest and token
 
+## Main containers
+
+- `events`
+- `contacts`
+- `guests`
+- `rsvpResponses`
+- `conversations`
+- `messages`
+
 ## Auth flow
 
 1. User signs in on frontend.
@@ -88,6 +100,13 @@ Responsibilities:
 5. Backend creates or updates event guests and RSVP tokens.
 6. Frontend calls send route.
 7. Backend sends emails through provider.
+
+## Contact and guest relationship
+
+- `contacts` are reusable per account
+- `guests` are event-specific recipient assignments
+- a guest can point back to a `contactId`
+- RSVP token and invite status stay on the guest, not on the contact
 
 ## RSVP flow
 

@@ -55,6 +55,39 @@ I built a full-stack invitation workflow app. The frontend is in Next.js and the
 - no CSV import yet
 - repo structure still has some historical backend copies inside the frontend tree
 
+## Demo flow for an interview
+
+Use this if someone asks you to show the product quickly.
+
+1. Open the event hub and show event creation.
+2. Open AI Studio and show one generated text or image result.
+3. Save an email draft or invite asset to the event.
+4. Open `My Guests` and show reusable contacts.
+5. Return to the event and open the send modal.
+6. Show that contacts are account-level but guests are event-level.
+7. Show the RSVP page and then the response dashboard.
+
+That sequence demonstrates:
+
+- product flow
+- data model decisions
+- frontend/backend integration
+- email + RSVP lifecycle
+
+## Questions to be ready for
+
+### Why not store everything directly on the event?
+
+Because contacts are reused across events, but RSVP tokens and invite state are event-specific.
+
+### Why use Next.js API routes if Azure already exists?
+
+They provide a controlled proxy layer so the browser does not call Azure directly and frontend deployment stays simple.
+
+### What was the hardest production issue?
+
+The hardest recurring issue was deployment/config coordination across Vercel and Azure, especially Firebase JSON config, Cosmos naming mismatches, and Azure package indexing.
+
 ## If asked about scaling
 
 Next steps would be:
