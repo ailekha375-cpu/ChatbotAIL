@@ -76,6 +76,7 @@ Deployment:
 - [C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md](C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md)
 - [C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md](C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md)
 - [C:\Users\yashv\ChatbotAIL\docs\API.md](C:\Users\yashv\ChatbotAIL\docs\API.md)
+- [C:\Users\yashv\ChatbotAIL\docs\FLOWS.md](C:\Users\yashv\ChatbotAIL\docs\FLOWS.md)
 - [C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md](C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md)
 - [C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md](C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md)
 - [C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md](C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md)

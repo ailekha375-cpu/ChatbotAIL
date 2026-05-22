@@ -13,6 +13,10 @@ flowchart LR
   D --> H["Firebase Admin token verification"]
 ```
 
+For step-by-step runtime behavior, see:
+
+- [C:\Users\yashv\ChatbotAIL\docs\FLOWS.md](C:\Users\yashv\ChatbotAIL\docs\FLOWS.md)
+
 ## Frontend
 
 Location:
