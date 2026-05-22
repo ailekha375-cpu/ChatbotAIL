@@ -66,7 +66,7 @@ These routes sit between the browser and Azure Functions.
 
 Location:
 
-- [C:\Users\yashv\ChatbotAIL\lekha_function_app\function_app.py](C:\Users\yashv\ChatbotAIL\lekha_function_app\function_app.py)
+- [lekha_function_app/function_app.py](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/lekha_function_app/function_app.py)
 
 Main route groups:
 

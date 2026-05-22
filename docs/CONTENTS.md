@@ -4,39 +4,39 @@ Use this page as the entry point for the project docs.
 
 ## Project overview
 
-- [C:\Users\yashv\ChatbotAIL\README.md](C:\Users\yashv\ChatbotAIL\README.md)
+- [README](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/README.md)
   - short summary of the project, repo structure, and main workflow
-- [C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md](C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md)
+- [Product overview](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/PRODUCT.md)
   - what the product is, who it is for, and how the workflow is designed
 
 ## System design
 
-- [C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md](C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md)
+- [Architecture](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/ARCHITECTURE.md)
   - high-level architecture, responsibilities, auth flow, send flow, RSVP flow
-- [C:\Users\yashv\ChatbotAIL\docs\FLOWS.md](C:\Users\yashv\ChatbotAIL\docs\FLOWS.md)
+- [Runtime flows](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/FLOWS.md)
   - runtime flow diagrams, routing behavior, chat intent handling, function-level paths
-- [C:\Users\yashv\ChatbotAIL\docs\API.md](C:\Users\yashv\ChatbotAIL\docs\API.md)
+- [API reference](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/API.md)
   - route summaries for frontend proxy routes and Azure Function routes
 
 ## Deployment and operations
 
-- [C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md](C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md)
+- [Deployment](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/DEPLOYMENT.md)
   - Vercel, Azure, Cosmos, Resend, and environment variable setup
-- [C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md](C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md)
+- [Troubleshooting](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/TROUBLESHOOTING.md)
   - real issues encountered, root causes, and fixes
 
 ## Interview preparation
 
-- [C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md](C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md)
+- [Interview notes](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/INTERVIEW_NOTES.md)
   - concise project explanation, design choices, tradeoffs, and demo flow
 
 ## Best reading order
 
-1. [C:\Users\yashv\ChatbotAIL\README.md](C:\Users\yashv\ChatbotAIL\README.md)
-2. [C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md](C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md)
-3. [C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md](C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md)
-4. [C:\Users\yashv\ChatbotAIL\docs\FLOWS.md](C:\Users\yashv\ChatbotAIL\docs\FLOWS.md)
-5. [C:\Users\yashv\ChatbotAIL\docs\API.md](C:\Users\yashv\ChatbotAIL\docs\API.md)
-6. [C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md](C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md)
-7. [C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md](C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md)
-8. [C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md](C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md)
+1. [README](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/README.md)
+2. [Product overview](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/PRODUCT.md)
+3. [Architecture](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/ARCHITECTURE.md)
+4. [Runtime flows](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/FLOWS.md)
+5. [API reference](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/API.md)
+6. [Deployment](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/DEPLOYMENT.md)
+7. [Troubleshooting](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/TROUBLESHOOTING.md)
+8. [Interview notes](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/INTERVIEW_NOTES.md)

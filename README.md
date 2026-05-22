@@ -16,11 +16,11 @@ This repo contains both the frontend and the Azure backend.
 
 ## Repo structure
 
-- [C:\Users\yashv\ChatbotAIL\invite-rsvp-app](C:\Users\yashv\ChatbotAIL\invite-rsvp-app)
+- [invite-rsvp-app](https://github.com/ailekha375-cpu/ChatbotAIL/tree/main/invite-rsvp-app)
   - Next.js frontend
   - frontend API proxy routes
   - chat UI, event hub, guest book, RSVP pages
-- [C:\Users\yashv\ChatbotAIL\lekha_function_app](C:\Users\yashv\ChatbotAIL\lekha_function_app)
+- [lekha_function_app](https://github.com/ailekha375-cpu/ChatbotAIL/tree/main/lekha_function_app)
   - Azure Functions backend
   - Cosmos access
   - Firebase auth verification
@@ -73,14 +73,14 @@ Deployment:
 
 ## Key docs
 
-- [C:\Users\yashv\ChatbotAIL\docs\CONTENTS.md](C:\Users\yashv\ChatbotAIL\docs\CONTENTS.md)
-- [C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md](C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md)
-- [C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md](C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md)
-- [C:\Users\yashv\ChatbotAIL\docs\API.md](C:\Users\yashv\ChatbotAIL\docs\API.md)
-- [C:\Users\yashv\ChatbotAIL\docs\FLOWS.md](C:\Users\yashv\ChatbotAIL\docs\FLOWS.md)
-- [C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md](C:\Users\yashv\ChatbotAIL\docs\DEPLOYMENT.md)
-- [C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md](C:\Users\yashv\ChatbotAIL\docs\TROUBLESHOOTING.md)
-- [C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md](C:\Users\yashv\ChatbotAIL\docs\INTERVIEW_NOTES.md)
+- [Documentation contents](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/CONTENTS.md)
+- [Product overview](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/PRODUCT.md)
+- [Architecture](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/ARCHITECTURE.md)
+- [API reference](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/API.md)
+- [Runtime flows](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/FLOWS.md)
+- [Deployment](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/DEPLOYMENT.md)
+- [Troubleshooting](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/TROUBLESHOOTING.md)
+- [Interview notes](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/INTERVIEW_NOTES.md)
 
 ## Important note about repo history
 
@@ -91,6 +91,6 @@ There are older backend artifacts inside the frontend tree, including:
 
 The active backend source of truth is:
 
-- [C:\Users\yashv\ChatbotAIL\lekha_function_app\function_app.py](C:\Users\yashv\ChatbotAIL\lekha_function_app\function_app.py)
+- [lekha_function_app/function_app.py](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/lekha_function_app/function_app.py)
 
 Those older files should be treated as historical copies unless the repo is cleaned up later.

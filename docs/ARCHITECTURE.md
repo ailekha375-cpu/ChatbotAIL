@@ -15,13 +15,13 @@ flowchart LR
 
 For step-by-step runtime behavior, see:
 
-- [C:\Users\yashv\ChatbotAIL\docs\FLOWS.md](C:\Users\yashv\ChatbotAIL\docs\FLOWS.md)
+- [Runtime flows](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/docs/FLOWS.md)
 
 ## Frontend
 
 Location:
 
-- [C:\Users\yashv\ChatbotAIL\invite-rsvp-app](C:\Users\yashv\ChatbotAIL\invite-rsvp-app)
+- [invite-rsvp-app](https://github.com/ailekha375-cpu/ChatbotAIL/tree/main/invite-rsvp-app)
 
 Responsibilities:
 
@@ -37,7 +37,7 @@ Responsibilities:
 
 Location:
 
-- [C:\Users\yashv\ChatbotAIL\lekha_function_app\function_app.py](C:\Users\yashv\ChatbotAIL\lekha_function_app\function_app.py)
+- [lekha_function_app/function_app.py](https://github.com/ailekha375-cpu/ChatbotAIL/blob/main/lekha_function_app/function_app.py)
 
 Responsibilities:
 
