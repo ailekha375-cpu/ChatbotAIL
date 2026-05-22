@@ -73,6 +73,7 @@ Deployment:
 
 ## Key docs
 
+- [C:\Users\yashv\ChatbotAIL\docs\CONTENTS.md](C:\Users\yashv\ChatbotAIL\docs\CONTENTS.md)
 - [C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md](C:\Users\yashv\ChatbotAIL\docs\PRODUCT.md)
 - [C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md](C:\Users\yashv\ChatbotAIL\docs\ARCHITECTURE.md)
 - [C:\Users\yashv\ChatbotAIL\docs\API.md](C:\Users\yashv\ChatbotAIL\docs\API.md)

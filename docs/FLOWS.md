@@ -238,7 +238,32 @@ sequenceDiagram
   P-->>G: Show response confirmation
 ```
 
-## 8. Contact and guest assignment flow
+## 8. RSVP submission sequence
+
+This is the write path after the guest opens the RSVP page and submits a response.
+
+```mermaid
+sequenceDiagram
+  participant G as Guest
+  participant UI as RSVP page
+  participant P as /api/rsvp/{token}
+  participant A as Azure rsvp_by_token
+  participant C as Cosmos
+
+  G->>UI: Fill attendance form
+  G->>UI: Click submit
+  UI->>P: POST token, attendance, guestCount, mealPreference, notes
+  P->>A: Forward request
+  A->>C: Load guest by token
+  A->>C: Validate event and guest link
+  A->>C: Upsert RSVP response in rsvpResponses
+  A->>C: Update guest response status if needed
+  A-->>P: Success payload
+  P-->>UI: Response saved
+  UI-->>G: Show confirmation state
+```
+
+## 9. Contact and guest assignment flow
 
 This matters because the product uses both account-level contacts and event-level guests.
 
@@ -254,7 +279,7 @@ flowchart TD
   F --> H
 ```
 
-## 9. Router and proxy logic in more detail
+## 10. Router and proxy logic in more detail
 
 The app uses a local proxy layer between the browser and Azure.
 
@@ -293,7 +318,7 @@ Important frontend helpers:
 - timeout and backend-unreachable handling is centralized
 - deployment only needs one backend host env var
 
-## 10. Intent to route mapping
+## 11. Intent to route mapping
 
 This is the shortest practical map from user intent to actual route execution.
 
@@ -315,7 +340,7 @@ This is the shortest practical map from user intent to actual route execution.
 | Open RSVP page | RSVP page loader | `/api/rsvp/{token}` | `rsvp/{token}` |
 | Submit RSVP | RSVP form submit | `/api/rsvp/{token}` | `rsvp/{token}` |
 
-## 11. Session and history flow
+## 12. Session and history flow
 
 Chat history has two layers:
 
@@ -331,7 +356,7 @@ Flow:
 
 This is why stale local chat issues appeared earlier in development.
 
-## 12. Why some actions are frontend-classified first
+## 13. Why some actions are frontend-classified first
 
 Send intent is currently classified in the frontend because:
 
@@ -341,7 +366,7 @@ Send intent is currently classified in the frontend because:
 
 This is not full LLM tool-calling yet. It is a controlled first step toward agent behavior.
 
-## 13. What this means for interviews
+## 14. What this means for interviews
 
 If someone asks how the app decides what to do, the short answer is:
 
@@ -353,7 +378,7 @@ If someone asks how the app decides what to do, the short answer is:
 
 This is a good example of using simple intent routing before moving to a heavier agent architecture.
 
-## 14. Next step for agent behavior
+## 15. Next step for agent behavior
 
 The natural extension is:
 

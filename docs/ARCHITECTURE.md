@@ -71,6 +71,35 @@ Responsibilities:
 
 ## Main containers
 
+```mermaid
+flowchart TD
+  E["events"] --> G["guests"]
+  C["contacts"] --> G
+  G --> R["rsvpResponses"]
+  U["uid"] --> E
+  U --> C
+  U --> O["conversations"]
+  O --> M["messages"]
+```
+
+Compact relationship summary:
+
+- `events`
+  - event metadata
+  - campaign kit fields
+- `contacts`
+  - reusable account-level guest book
+- `guests`
+  - event-level recipient assignments
+  - may reference `contactId`
+  - holds RSVP token and send state
+- `rsvpResponses`
+  - guest response records tied to an event guest
+- `conversations`
+  - backend chat session metadata
+- `messages`
+  - backend chat history per conversation
+
 - `events`
 - `contacts`
 - `guests`
