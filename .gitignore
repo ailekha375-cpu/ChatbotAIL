@@ -1,5 +1,32 @@
-lekha_function_app/firebase-service-account.json
-lekha_function_app/local.settings.json
-lekha_function_app/azurevenv/
-lekha_function_app/.python_packages/
-lekha_function_app/__pycache__/
+# Secrets and local config
+**/local.settings.json
+**/firebase-service-account.json
+**/.env
+**/.env.local
+**/.env.*.local
+**/.secrets
+**/secrets/
+**/*.pem
+**/*.pfx
+**/*.key
+
+# Python
+**/.python_packages/
+**/azurevenv/
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.py[cod]
+
+# Node
+**/node_modules/
+**/dist/
+
+# Azure / local emulation artifacts
+**/__blobstorage__/
+**/__queuestorage__/
+**/__azurite_db*__.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
