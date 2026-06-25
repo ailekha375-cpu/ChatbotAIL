@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lekha",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "cd /d C:\\Users\\yashv\\ChatbotAIL\\invite-rsvp-app && npm run dev -- --port 3000"],
+      "port": 3000
+    }
+  ]
+}
